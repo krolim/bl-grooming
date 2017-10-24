@@ -4,12 +4,12 @@ import Client from "./Client";
 
 class App extends Component {
   state = {
-    voters: [],
-    page: 
+    voters: [] 
   };
 
   constructor(props) {
     super(props);
+    this.page = 'menu';
     this.retrieveVoters();
   } 
 
@@ -31,11 +31,32 @@ class App extends Component {
   render() {
     return (
       <div className="App">
+        <Content page={ this.page } switch={ (value) => { this.page = value } } />
+      </div>
+    );
+  }
+}
+
+function Content(props) {
+  if (props.page == 'menu') 
+    return (
+      <Menu switch={ props.switch }/>
+    );
+  else if (props.page == 'content') 
+    return (
+      <div className="App">
         <h1>Grooming</h1>
         <VoterQueue voters={ this.state.voters }/>
       </div>
     );
-  }
+}
+
+function Menu(props) {
+  return (
+    <div className="App">
+      <button onClick={ () => { props.switch('content'); } }>Click me</button>
+    </div>
+  );
 }
 
 function VoterQueue(props) {
