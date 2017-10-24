@@ -1,0 +1,24 @@
+{
+  "name": "voter-app",
+  "version": "1.0.0",
+  "description": "Voting app",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "esling && mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/krolim/bl-grooming.git"
+  },
+  "author": "krolim",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/krolim/bl-grooming/issues"
+  },
+  "homepage": "https://github.com/krolim/bl-grooming#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2"
+  }
+}
