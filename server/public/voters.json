@@ -1,5 +1,5 @@
 [ 
-  { "avatar": "erata.jpg", "name": "Erata" },
-  { "avatar": "Batman.png", "name": "Batmana" },
-  { "avatar": "Batman.png", "name": "Batmana2" }
+  { "avatar": "erata.jpg", "name": "Erata", "status": "joined", "vote": "" },
+  { "avatar": "Batman.png", "name": "Batmana", "status": "voted", "vote": "2" },
+  { "avatar": "picachu.jpg", "name": "Пикачуто", "status": "voted", "vote": "" }
 ]

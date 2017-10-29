@@ -8,6 +8,16 @@
   float: left;
 }
 
+.Participant-voted {
+  height: 170px;
+  width: 170px;
+  padding: 10px;
+  border-style: dashed;
+  border-width: 2px;
+  border-color: green;
+  float: left;
+}
+
 .Participant-avatar {
   height: 180px;
   width: 150px;

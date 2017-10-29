@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import './App.css';
 import Client from "./Client";
 import { Route } from 'react-router'
-import { BrowserRouter, Switch, Link } from 'react-router-dom'
+import { BrowserRouter, Switch } from 'react-router-dom';
 import Moderator from './Moderator';
+import { Nav, Navbar, NavItem } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 
 class App extends Component {
   state = {
@@ -32,25 +34,36 @@ class App extends Component {
   }
 
   render() {
-    return (
-      <div className="App">
-        <BrowserRouter>
+      return (
+      <div>      
+      <BrowserRouter>
+        <div>
           <div>
-            <nav>
-              <div>
-                <Link to="/vote">Voter</Link>
-              </div>
-              <div>
-                <Link to="/admin">Moderator</Link>
-              </div>
-            </nav>
+            <Navbar inverse={true}>
+              <Navbar.Header>
+                <Navbar.Brand>
+                  <LinkContainer to="/">
+                    <a>BL Grooming</a>
+                  </LinkContainer>
+                </Navbar.Brand>
+              </Navbar.Header>
+              <Nav>
+                <LinkContainer to="/vote">
+                  <NavItem>Voter</NavItem>
+                </LinkContainer>
+                <LinkContainer to="/admin">
+                  <NavItem>Moderator</NavItem>
+                </LinkContainer>
+              </Nav>
+            </Navbar>
+          </div>
             <Switch>
               <Route path="/vote" component={Vote}/>
               <Route path="/admin" component={Moderator} /> }/>
             </Switch>
-          </div>
-        </BrowserRouter>
-      </div>
+        </div>
+      </BrowserRouter>
+    </div>
     );
   }
 }

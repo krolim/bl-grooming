@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
 import Client from "./Client";
-import { Link } from 'react-router-dom'
+import { Panel, Image, Row, Col } from 'react-bootstrap';
+// import { Link } from 'react-router-dom'
 
 class Moderator extends Component {
   state = {
@@ -22,7 +23,7 @@ class Moderator extends Component {
   }
   
   retrieveVoters() {
-    console.log('retrieve');
+    // console.log('retrieve');
     Client.retrieve(data => {
       this.setState({ voters: data});
     });
@@ -38,21 +39,23 @@ class Moderator extends Component {
 function VoterQueue(props) {
   let voters = [];
   for (let voter of props.voters)
-    voters.push(<Voter avatar={ voter.avatar } name={ voter. name } />)
+    voters.push(<Col xs={3} md={3}><Voter key={ voter.name } voter={ voter } /></Col>)
   return (
-    <div className="Voter-queue">
-      { voters };
+    <div className="container">
+      <Row>
+        { voters }
+      </Row>
     </div>
   );
 }
 
 function Voter(props) {
-  let avatar = '/avatars/' + props.avatar;
+  let avatar = '/avatars/' + props.voter.avatar;
+  let votedClass = props.voter.status === 'voted'?'success':'default';
   return (
-    <span className="Participant">
-      <img className="Participant-avatar" src={ avatar } alt={ props.name } />
-      <footer className="Participant-name">{ props.name }</footer>
-    </span>
+    <Panel bsStyle={ votedClass } header={ props.voter.name }  style={{ "height": 180, "maxWidth": 171} }>
+      <Image src={ avatar } alt='171x180' responsive= {true} />
+    </Panel>
   );
 }
 
