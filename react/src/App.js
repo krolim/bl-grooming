@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import './App.css';
 import Client from "./Client";
+import { Route } from 'react-router'
+import { BrowserRouter, Switch, Link } from 'react-router-dom'
+import Moderator from './Moderator';
 
 class App extends Component {
   state = {
@@ -27,57 +30,33 @@ class App extends Component {
       this.setState({ voters: data});
     });
   }
-  
+
   render() {
     return (
       <div className="App">
-        <Content page={ this.page } switch={ (value) => { this.page = value } } />
+        <BrowserRouter>
+          <div>
+            <nav>
+              <div>
+                <Link to="/vote">Voter</Link>
+              </div>
+              <div>
+                <Link to="/admin">Moderator</Link>
+              </div>
+            </nav>
+            <Switch>
+              <Route path="/vote" component={Vote}/>
+              <Route path="/admin" component={Moderator} /> }/>
+            </Switch>
+          </div>
+        </BrowserRouter>
       </div>
     );
   }
 }
 
-function Content(props) {
-  if (props.page == 'menu') 
-    return (
-      <Menu switch={ props.switch }/>
-    );
-  else if (props.page == 'content') 
-    return (
-      <div className="App">
-        <h1>Grooming</h1>
-        <VoterQueue voters={ this.state.voters }/>
-      </div>
-    );
-}
-
-function Menu(props) {
-  return (
-    <div className="App">
-      <button onClick={ () => { props.switch('content'); } }>Click me</button>
-    </div>
-  );
-}
-
-function VoterQueue(props) {
-  let voters = [];
-  for (let voter of props.voters)
-    voters.push(<Voter avatar={ voter.avatar } name={ voter. name } />)
-  return (
-    <div className="Voter-queue">
-      { voters };
-    </div>
-  );
-}
-
-function Voter(props) {
-  let avatar = '/avatars/' + props.avatar;
-  return (
-    <span className="Participant">
-      <img className="Participant-avatar" src={ avatar } alt={ props.name } />
-      <footer className="Participant-name">{ props.name }</footer>
-    </span>
-  );
+function Vote() {
+  return <h1>Vote</h1>
 }
 
 export default App;
