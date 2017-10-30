@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './App.css';
+// import './App.css';
 import Client from "./Client";
 import { Route } from 'react-router'
 import { BrowserRouter, Switch } from 'react-router-dom';
@@ -35,11 +35,12 @@ class App extends Component {
 
   render() {
       return (
-      <div>      
+        
+      <div style={{ "width": "100%" }}>
       <BrowserRouter>
         <div>
           <div>
-            <Navbar inverse={true}>
+            <Navbar fluid={true} inverse={true}>
               <Navbar.Header>
                 <Navbar.Brand>
                   <LinkContainer to="/">

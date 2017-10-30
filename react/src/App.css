@@ -1,5 +1,9 @@
 .App {
-  text-align: center;
+  width: 100%;
+}
+
+.VoterCell {
+  padding: 10px;
 }
 
 .Participant {
@@ -34,27 +38,10 @@
   display: inline-block
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+div[class="row"] {
+  border: 1px dotted rgba(0, 0, 0, 0.7);
 }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
-}
-
-.App-title {
-  font-size: 1.5em;
-}
-
-.App-intro {
-  font-size: large;
-}
-
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+div[class^="col-"] {
+  background-color: rgba(255, 0, 0, 0.5);
 }
