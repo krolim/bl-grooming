@@ -19,6 +19,7 @@
   "homepage": "https://github.com/krolim/bl-grooming#readme",
   "dependencies": {
     "body-parser": "^1.18.2",
+    "cookie-parser": "^1.4.3",
     "express": "^4.16.2"
   }
 }

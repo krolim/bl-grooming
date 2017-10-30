@@ -39,7 +39,7 @@ class Moderator extends Component {
 function VoterQueue(props) {
   let voters = [];
   for (let voter of props.voters)
-    voters.push(<Col xs={3} md={3}><Voter key={ voter.name } voter={ voter } /></Col>)
+    voters.push(<Col xs={4} md={2} lg={1}><Voter key={ voter.name } voter={ voter } /></Col>)
   return (
     <div className="container">
       <Row>
