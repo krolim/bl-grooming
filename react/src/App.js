@@ -4,8 +4,10 @@ import Client from "./Client";
 import { Route } from 'react-router'
 import { BrowserRouter, Switch } from 'react-router-dom';
 import Moderator from './Moderator';
+import Register from './Register';
 import { Nav, Navbar, NavItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
+import Voter from "./Voter";
 
 class App extends Component {
   state = {
@@ -49,6 +51,9 @@ class App extends Component {
                 </Navbar.Brand>
               </Navbar.Header>
               <Nav>
+              <LinkContainer to="/reg">
+                  <NavItem>Register</NavItem>
+                </LinkContainer>
                 <LinkContainer to="/vote">
                   <NavItem>Voter</NavItem>
                 </LinkContainer>
@@ -59,7 +64,8 @@ class App extends Component {
             </Navbar>
           </div>
             <Switch>
-              <Route path="/vote" component={Vote}/>
+              <Route path="/reg" component={Register}/>
+              <Route path="/vote" component={Voter}/>
               <Route path="/admin" component={Moderator} /> }/>
             </Switch>
         </div>

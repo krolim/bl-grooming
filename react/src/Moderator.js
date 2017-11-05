@@ -50,16 +50,27 @@ class Moderator extends Component {
   }
 
   handleVoteClick(swtch) {
-    if (swtch)
-      this.state.showVotes = !this.state.showVotes;
+    this.state.view = 'voted';
+    this.state.showVotes = true;
     return this.state.showVotes;
   }
 
+  handleNewVoteClick() {
+    this.state.view = 'all';
+    this.state.showVotes = false;
+  }
+
   footer() {
-    if (this.state.voters.voted.length > 0) 
+    if (this.state.voters.voted.length > 0 && !this.state.showVotes) 
       return (<div>
         <Button onClick={ (e) => this.handleVoteClick(true) } bsStyle="primary" bsSize="large">Show results</Button>
       </div>);
+    else if (this.state.showVotes) {
+      return (<div>
+        <Button onClick={ (e) => this.handleNewVoteClick(true) } bsStyle="primary" bsSize="large">Start New Vote</Button>
+      </div>);
+    }
+    
     return '';
   }
 
@@ -89,15 +100,14 @@ function VoterQueue(props) {
 }
 
 function Voter(props) {
-  let avatar = '/avatars/' + props.voter.avatar;
-  let votedClass = props.voter.status === 'voted'?'success':'default';
-  let vote = props.voter.vote === ''?'?':props.voter.vote;
+  const avatar = '/avatars/' + props.voter.avatar;
+  const votedClass = props.voter.status === 'voted'?'success':'default';
+  const vote = props.voter.vote === ''?'?':props.voter.vote;
   return (
     <div>
       <div>
         <Panel bsStyle={ votedClass } header={ props.voter.name }  style={{ "height": 180, "maxWidth": 171} }>
-          <Image src={ avatar } alt='171x180' responsive= {true} />
-          
+          <Image src={ avatar } alt='171x180' responsive= {true} />          
         </Panel>
       </div>
       <div>
