@@ -10,6 +10,9 @@ class Register extends Component {
     super(props);
     this.state = {
       value: '',
+      avatarSelected: false,
+      displayGrid: false,
+      selectedAvatar: {},
       avatars: []
     };
     this.handleChange = this.handleChange.bind(this);
@@ -36,7 +39,30 @@ class Register extends Component {
     this.setState({ value: e.target.value });
   };
 
+  tumbnailClickHandler(index) {
+    // selected = 
+    this.setState({ 
+      selectedAvatar: this.state.avatars[index],
+      avatarSelected: true,
+      showGrid: false
+    });
+    console.log('index',index);
+    console.log(this.state.selectedAvatar);
+  }
+
   render() {
+    let avatarSelection; 
+    if (this.state.avatarSelected)
+      avatarSelection = 
+        <Avatar src={ this.state.selectedAvatar.src } />;
+    else if (this.state.displayGrid)
+      avatarSelection = 
+        <Gallery rowHeight={80} images={ this.state.avatars } 
+            enableLightbox={false} 
+            onClickThumbnail={ this.tumbnailClickHandler.bind(this) }/>;
+    else
+      avatarSelection = 
+        <Avatar src="/public/avatars/Unknown-person.png" onClick={() => { this.setState({ displayGrid: true }); }} />;
     return (
       <div>
         <form>
@@ -58,9 +84,7 @@ class Register extends Component {
             validationState={this.getValidationState()}
           >
             <ControlLabel>Avatar</ControlLabel>
-            <Gallery rowHeight={60} images={ this.state.avatars }/>
-            {/* <AvatarGrid2 avatars={this.state.avatars} /> */}
-            {/* <UnknownAvatar /> */}
+           { avatarSelection }
           </FormGroup>
         </form>
       </div>
@@ -68,10 +92,12 @@ class Register extends Component {
   }
 }
 
-const UnknownAvatar = (props) => {
+const Avatar = (props) => {
+  // /avatars/Unknown-person.png
+  
   return (
-    <div style={{ "height": 80, "maxWidth": 71 }}>
-      <Image src="/avatars/Unknown-person.png" alt='171x180' responsive={true} />
+    <div style={{ "height": 80, "maxWidth": 71 }} onClick={props.onClick}>
+      <Image src={ props.src } alt='171x180' responsive={true} />
     </div>
   );
 }
