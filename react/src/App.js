@@ -10,31 +10,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 import Voter from "./Voter";
 
 class App extends Component {
-  state = {
-    voters: [] 
-  };
-
-  constructor(props) {
-    super(props);
-    this.page = 'menu';
-    this.retrieveVoters();
-  } 
-
-  componentDidMount() {
-    this.interval = setInterval(this.retrieveVoters.bind(this), 1000);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.interval);
-  }
-  
-  retrieveVoters() {
-    console.log('retrieve');
-    Client.retrieve(data => {
-      this.setState({ voters: data});
-    });
-  }
-
+ 
   render() {
       return (
         
@@ -73,10 +49,6 @@ class App extends Component {
     </div>
     );
   }
-}
-
-function Vote() {
-  return <h1>Vote</h1>
 }
 
 export default App;

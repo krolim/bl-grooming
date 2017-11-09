@@ -33,7 +33,7 @@ class Moderator extends Component {
   
   retrieveVoters() {
     // console.log('retrieve');
-    Client.retrieve(data => {
+    Client.retrieve(`public/voters.json`, (data) => {
       const voters = {
         all: [],
         voted: [],

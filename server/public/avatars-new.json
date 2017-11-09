@@ -1,0 +1,18 @@
+[{
+  "src": "/avatars/erata.jpg",
+  "thumbnail": "/avatars/erata.jpg",
+  "thumbnailWidth": 50,
+  "thumbnailHeight": 50
+},
+{
+  "src": "/avatars/Batman.png",
+  "thumbnail": "/avatars/Batman.png",
+  "thumbnailWidth": 50,
+  "thumbnailHeight": 50  
+},
+{
+  "src": "/avatars/picachu.jpg",
+  "thumbnail": "/avatars/picachu.jpg",
+  "thumbnailWidth": 50,
+  "thumbnailHeight": 50  
+}]
