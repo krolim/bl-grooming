@@ -6,16 +6,15 @@ const avatars = [];
 
 fs.readdir('public/avatars', (err, files) => {
   files.forEach(file => {
-    const loc = '/avatars/' + file;
+    const loc = '/public/avatars/' + file;
     const avatar = {
       src: loc,
       thumbnail: loc,
-      thumbnailWidth: 50,
-      thumbnailHeight: 50  
+      thumbnailWidth: 100,
+      thumbnailHeight: 100  
     }
     avatars.push(avatar);
   });
-  console.log(avatars);
 });
 
 module.exports.allAvatars = () => {

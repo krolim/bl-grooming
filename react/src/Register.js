@@ -58,7 +58,7 @@ class Register extends Component {
             validationState={this.getValidationState()}
           >
             <ControlLabel>Avatar</ControlLabel>
-            <Gallery rowHeight={50} images={ this.state.avatars }/>
+            <Gallery rowHeight={60} images={ this.state.avatars }/>
             {/* <AvatarGrid2 avatars={this.state.avatars} /> */}
             {/* <UnknownAvatar /> */}
           </FormGroup>
@@ -72,61 +72,6 @@ const UnknownAvatar = (props) => {
   return (
     <div style={{ "height": 80, "maxWidth": 71 }}>
       <Image src="/avatars/Unknown-person.png" alt='171x180' responsive={true} />
-    </div>
-  );
-}
-
-const AvatarGrid2 = (props) => {
-  const rows = [];
-  let row = [];
-  const l = props.avatars.length;
-  for (let i = 0; i < l; i++) {
-    const imgSrc = '/avatars/' + props.avatars[i].img;
-    const cell = (
-      <Col xs={3}>
-        <div style={{ "height": 80, "maxWidth": 71, "border-width": "1px", "border-style": "solid" }}>
-          <Image src={imgSrc} alt='71x80' responsive={true} />
-        </div>
-      </Col>
-    );
-    row.push(cell);
-    if (i !== 0 && (i % 5 === 0 || i === l-1)) {
-      rows.push(<Row> {row} </Row>);
-      row = [];
-    }
-  }
-  return (
-    <div style={{ "text-align": "left" }}>
-      <Grid fluid={true} style={{ "text-align": "left"  }}>
-        {rows}
-      </Grid>
-    </div>
-  );
-}
-
-const AvatarGrid = (props) => {
-  const rows = [];
-  let row = [];
-  const l = props.avatars.length;
-  for (let i = 0; i < l; i++) {
-    const imgSrc = '/avatars/' + props.avatars[i].img;
-    const cell = 
-      <td style={{"border-width": "1px", "border-style": "dashed"}}>
-        <div style={{ "height": 80, "maxWidth": 71, "border-width": "1px", "border-style": "dashed" }}>
-          <Image src={imgSrc} alt='71x80' responsive={true} />
-        </div>
-      </td>;
-    row.push(cell);
-    if (i !== 0 && (i % 5 === 0 || i === l-1)) {
-      rows.push(<tr> {row} </tr>);
-      row = [];
-    }
-  }
-  return (
-    <div style={{ "width": "100%" }}>
-      <table style={{ "width": "100%" }}>
-        {rows}
-      </table>
     </div>
   );
 }
