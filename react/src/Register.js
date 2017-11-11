@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import Client from "./Client";
-import { Image, FormGroup, ControlLabel, FormControl, Grid, Row, Col } from 'react-bootstrap';
+import { Image, FormGroup, ControlLabel, FormControl, Button } from 'react-bootstrap';
 import Gallery from 'react-grid-gallery';
 
 class Register extends Component {
@@ -50,11 +50,17 @@ class Register extends Component {
     console.log(this.state.selectedAvatar);
   }
 
+  startVoteClick(e) {
+    console.log(e);
+  }
+
   render() {
     let avatarSelection; 
+    let joinButton = '';
     if (this.state.avatarSelected)
       avatarSelection = 
-        <Avatar src={ this.state.selectedAvatar.src } />;
+        <Avatar src={ this.state.selectedAvatar.src } 
+          onClick={() => { this.setState({ displayGrid: true, avatarSelected: false }); }}/>;
     else if (this.state.displayGrid)
       avatarSelection = 
         <Gallery rowHeight={80} images={ this.state.avatars } 
@@ -62,31 +68,41 @@ class Register extends Component {
             onClickThumbnail={ this.tumbnailClickHandler.bind(this) }/>;
     else
       avatarSelection = 
-        <Avatar src="/public/avatars/Unknown-person.png" onClick={() => { this.setState({ displayGrid: true }); }} />;
+        <Avatar src="/public/avatars/Unknown-person.png" 
+            onClick={() => { this.setState({ displayGrid: true }); }} />;
+    if (!this.state.displayGrid || this.state.avatarSelected)
+      joinButton = 
+          <Button onClick={ this.startVoteClick }  
+              bsStyle="primary" disabled={ !this.state.avatarSelected }>Start Voting >></Button>;
     return (
       <div>
-        <form>
-          <FormGroup
-            controlId="name"
-            validationState={this.getValidationState()}
-          >
-            <ControlLabel>Name</ControlLabel>
-            <FormControl
-              type="text"
-              value={this.state.value}
-              placeholder="Enter name"
-              onChange={this.handleChange}
-            />
-            <FormControl.Feedback />
-          </FormGroup>
-          <FormGroup
-            controlId="avatar"
-            validationState={this.getValidationState()}
-          >
-            <ControlLabel>Avatar</ControlLabel>
-           { avatarSelection }
-          </FormGroup>
-        </form>
+        <div style={{ "padding": 10}}>
+          <form>
+            <FormGroup
+              controlId="name"
+              validationState={this.getValidationState()}
+            >
+              <ControlLabel>Name</ControlLabel>
+              <FormControl
+                type="text"
+                value={this.state.value}
+                placeholder="Enter name"
+                onChange={this.handleChange}
+              />
+              <FormControl.Feedback />
+            </FormGroup>
+            <FormGroup
+              controlId="avatar"
+              validationState={this.getValidationState()}
+            >
+              <ControlLabel>Avatar</ControlLabel>
+            { avatarSelection }
+            </FormGroup>
+          </form>
+        </div>
+        <div style={{ "textAlign" : "right", "padding": 10}}>
+          { joinButton }
+        </div>
       </div>
     );
   }
