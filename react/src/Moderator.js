@@ -19,7 +19,8 @@ class Moderator extends Component {
       view: 'all'
     };
     this.retrieveVoters();
-    this.votes = this.handleVoteClick.bind(this);
+    this.handleVoteClick = this.handleVoteClick.bind(this);
+    this.handleNewVoteClick = this.handleNewVoteClick.bind(this);
     this.footer = this.footer.bind(this);
   } 
 
@@ -49,15 +50,19 @@ class Moderator extends Component {
     });
   }
 
-  handleVoteClick(swtch) {
+  handleVoteClick() {
     this.state.view = 'voted';
     this.state.showVotes = true;
     return this.state.showVotes;
   }
 
   handleNewVoteClick() {
-    this.state.view = 'all';
-    this.state.showVotes = false;
+    Client.retrieve('new-vote', (data, err) => {
+      if (err)
+        console.log(err);
+      this.state.view = 'all';
+      this.state.showVotes = false;
+    });
   }
 
   footer() {
