@@ -8,6 +8,7 @@ fs.readdir('public/avatars', (err, files) => {
   files.forEach(file => {
     const loc = '/public/avatars/' + file;
     const avatar = {
+      name: file,
       src: loc,
       thumbnail: loc,
       thumbnailWidth: 100,

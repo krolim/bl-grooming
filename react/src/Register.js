@@ -17,6 +17,7 @@ class Register extends Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.retrieveAvatars = this.retrieveAvatars.bind(this);
+    this.startVoteClick = this.startVoteClick.bind(this);
     this.retrieveAvatars();
   }
 
@@ -51,7 +52,14 @@ class Register extends Component {
   }
 
   startVoteClick(e) {
-    console.log(e);
+    Client.post('/join', 'POST', 
+      { name: this.state.value, avatar: this.state.selectedAvatar.name }, 
+        (data, err) => {
+          if (err) 
+            console.log(err);
+          window.location = '/voting';
+      });
+    
   }
 
   render() {
@@ -73,7 +81,9 @@ class Register extends Component {
     if (!this.state.displayGrid || this.state.avatarSelected)
       joinButton = 
           <Button onClick={ this.startVoteClick }  
-              bsStyle="primary" disabled={ !this.state.avatarSelected }>Start Voting >></Button>;
+              bsStyle="primary" 
+              disabled={ !this.state.avatarSelected || this.getValidationState() !== 'success' }
+              >Start Voting >></Button>;
     return (
       <div>
         <div style={{ "padding": 10}}>

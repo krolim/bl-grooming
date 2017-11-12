@@ -30,7 +30,7 @@ class App extends Component {
               <LinkContainer to="/reg">
                   <NavItem>Register</NavItem>
                 </LinkContainer>
-                <LinkContainer to="/vote">
+                <LinkContainer to="/voting">
                   <NavItem>Voter</NavItem>
                 </LinkContainer>
                 <LinkContainer to="/admin">
@@ -41,7 +41,7 @@ class App extends Component {
           </div>
             <Switch>
               <Route path="/reg" component={Register}/>
-              <Route path="/vote" component={Voter}/>
+              <Route path="/voting" component={Voter}/>
               <Route path="/admin" component={Moderator} /> }/>
             </Switch>
         </div>

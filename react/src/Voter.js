@@ -8,47 +8,41 @@ class Voter extends Component {
   constructor(props) {
     super(props);
   }
+
+  vote(value) {
+    alert(value);
+    Client.post('/vote', 'POST', { vote: value }, (data, err) => {
+      if (err == 'Error: HTTP Error Unauthorized')
+        window.location = '/reg';
+      console.log('Your vote is: ', value);
+    });
+  } 
+
+  buttons() {
+    const rows = [];
+    for(let i=1; i<4; i++) {
+      rows.push(
+        <tr><td colspan="2">
+          <Button bsSize="large" onClick={ () => this.vote(i) } block><h1>{ i }</h1></Button>
+        </td></tr>
+      );
+    } 
+    rows.push(
+      <tr>
+        <td xs={6}><Button onClick={ () => this.vote(4) } bsSize="large" block><h3>4</h3></Button></td>   
+        <td xs={6}><Button onClick={ () => this.vote(5) } bsSize="large" block><h3>5</h3></Button></td>   
+      </tr>
+    );
+    return rows;
+  }
   
   render() {
     return(
       <div className="container" style={{"width": "100%", "height": "100%", "textAlign": "center"}}>
-        <table style={{ "width": "100%" }}>  
-          <tr>
-            <td colspan="2"><Button bsSize="large" block><h1>1</h1></Button></td>   
-          </tr>
-          <tr>
-            <td colspan="2"><Button bsSize="large" block><h1>2</h1></Button></td>   
-          </tr>
-          <tr>
-            <td colspan="2"><Button bsSize="large" block><h1>3</h1></Button></td>   
-          </tr>
-          <tr>
-            <td xs={6}><Button bsSize="large" block><h3>4</h3></Button></td>   
-            <td xs={6}><Button bsSize="large" block><h3>5</h3></Button></td>   
-          </tr>
+        <table style={{ "width": "100%" }}>
+          { this.buttons() }  
+          
         </table>
-      </div>
-    );
-  }
-
-  oldrender() {
-    return(
-      <div>
-        <Grid fluid={true}>
-          <Row>
-            <Col><Button bsSize="large" block>1</Button></Col>   
-          </Row>
-          <Row>
-            <Col><Button bsSize="large" block>2</Button></Col>   
-          </Row>
-          <Row>
-            <Col><Button bsSize="large" block>3</Button></Col>   
-          </Row>
-          <Row>
-            <Col xs={6}><Button bsSize="large" block>4</Button></Col>   
-            <Col xs={6}><Button bsSize="large" block>5</Button></Col>   
-          </Row>
-        </Grid>
       </div>
     );
   }

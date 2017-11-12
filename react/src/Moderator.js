@@ -32,8 +32,8 @@ class Moderator extends Component {
   }
   
   retrieveVoters() {
-    // console.log('retrieve');
-    Client.retrieve(`public/voters.json`, (data) => {
+    Client.retrieve('/voters', (data) => {
+      // console.log(data); /public/voters.json
       const voters = {
         all: [],
         voted: [],
@@ -45,7 +45,7 @@ class Moderator extends Component {
         { return v1 - v2 });
       voters.pending = data.filter((voter) => 
         { return voter.status !== 'voted'});
-      this.state.voters = voters;
+      this.setState({ voters: voters });
     });
   }
 
@@ -61,17 +61,22 @@ class Moderator extends Component {
   }
 
   footer() {
-    if (this.state.voters.voted.length > 0 && !this.state.showVotes) 
+    if (this.state.voters.all.length < 2) {
+      return(<h2>Waiting for voters to join...</h2>);
+    } else {
+      const button = {
+        onClick: this.state.showVotes?
+          this.handleNewVoteClick:this.handleVoteClick,
+        title: this.state.showVotes?
+          'Start New Vote':'Show results'
+      };
       return (<div>
-        <Button onClick={ (e) => this.handleVoteClick(true) } bsStyle="primary" bsSize="large">Show results</Button>
-      </div>);
-    else if (this.state.showVotes) {
-      return (<div>
-        <Button onClick={ (e) => this.handleNewVoteClick(true) } bsStyle="primary" bsSize="large">Start New Vote</Button>
+        <Button disabled={ this.state.voters.voted.length < 2 } 
+            onClick={ button.onClick } bsStyle="primary" bsSize="large">{ button.title }</Button>
       </div>);
     }
     
-    return '';
+    // return '';
   }
 
   render() {
@@ -100,7 +105,7 @@ function VoterQueue(props) {
 }
 
 function Voter(props) {
-  const avatar = '/avatars/' + props.voter.avatar;
+  const avatar = '/public/avatars/' + props.voter.avatar;
   const votedClass = props.voter.status === 'voted'?'success':'default';
   const vote = props.voter.vote === ''?'?':props.voter.vote;
   return (
