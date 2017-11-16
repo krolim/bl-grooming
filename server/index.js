@@ -32,7 +32,9 @@ app.post('/join', (req, resp) => {
 });
 
 app.post('/vote', (req, resp) => {
-  console.log('voted!');
+  if (!req.body.vote) 
+    return resp.status(400).send();
+  console.log('voted: ', req.body.vote);
   const cookie = req.cookies[COOKIE];
   if (!cookie) { 
     console.log('No cookie');
@@ -43,7 +45,7 @@ app.post('/vote', (req, resp) => {
   resp.status(200).send(); 
 });
 
-app.get('/new-vote', (req, resp) => {
+app.put('/new-vote', (req, resp) => {
   voteManager.newVote();
   resp.status(200).send();
 });

@@ -1,7 +1,7 @@
 'use strict'
 /* eslint-disable no-undef */
 const retrieve = (url, cb) => {
-  console.log('URL ->>>', url);
+  // console.log('URL ->>>', url);
   return fetch(url, {
     accept: "application/json",
     credentials: 'include'
@@ -32,7 +32,7 @@ const post = (url, method, body, cb) => {
 };
 
 function checkStatus(response) {
-  console.log(response);
+  // console.log(response);
   if (response.status >= 200 && response.status < 300)
     return response;
   // if (response.status === 401)

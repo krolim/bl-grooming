@@ -43,7 +43,7 @@ class Moderator extends Component {
       voters.all = data;
       voters.voted = data.filter((voter) => 
         { return voter.status == 'voted'; }).sort((v1, v2) => 
-        { return v1 - v2 });
+        { return v1.vote - v2.vote });
       voters.pending = data.filter((voter) => 
         { return voter.status !== 'voted'});
       this.setState({ voters: voters });
@@ -57,12 +57,16 @@ class Moderator extends Component {
   }
 
   handleNewVoteClick() {
-    Client.retrieve('new-vote', (data, err) => {
+    Client.post('new-vote', 'PUT', {}, (data, err) => {
+      console.log('view --->', this.state.view);
       if (err)
         console.log(err);
-      this.state.view = 'all';
-      this.state.showVotes = false;
+      this.setState({
+        view: 'all', 
+        showVotes: false
+      });
     });
+    console.log('view new --->', this.state.view);
   }
 
   footer() {
@@ -87,7 +91,7 @@ class Moderator extends Component {
   render() {
     const view = this.state.view === 'all'?this.state.voters.all:this.state.voters.voted;
     return (
-      <div className="container" style={{"width": "100%", "text-align": "center"}}>
+      <div className="container" style={{"width": "100%", "textAlign": "center"}}>
         <VoterQueue voters={view} showVotes={this.state.showVotes}  />
         { this.footer() }
       </div>
