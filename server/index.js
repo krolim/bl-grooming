@@ -20,18 +20,29 @@ app.get('/user-avatars', (req, resp) => {
 app.post('/join', (req, resp) => {
   let user = req.body;
   let avatar = req.body.avatar;
+  console.log('join', user, avatar);
   const cookie = req.cookies[COOKIE];
   if (cookie)
     user = JSON.parse(cookie);
-  const err = voteManager.join(user);
-  if (err)
-    return resp.status(400).send(err);
+  console.log('cookie', cookie);
+  const result = voteManager.join(user);
+  if (result[1] == 400)
+    return resp.status(400).send(result[1]);
+  else if (result[1] == 401)
+    return resp.status(401).send(result[1]);
   if (!cookie) 
     resp.cookie(COOKIE, JSON.stringify(user));
   return resp.status(200).send(user);
 });
 
+app.post('/close', (req, resp) => {
+  voteManager.closeVote();
+  resp.status(200).send();
+});
+
 app.post('/vote', (req, resp) => {
+  if (!voteManager.isOpen())
+    return resp.status(403).send('Voting closed');
   if (!req.body.vote) 
     return resp.status(400).send();
   console.log('voted: ', req.body.vote);

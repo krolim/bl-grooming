@@ -14,6 +14,10 @@ class Moderator extends Component {
         voted: [],
         pending: []
       },
+      voteStats: {
+        min: -1,
+        max: 1000
+      },
       showVotes: false,
       votingFinished: false, 
       view: 'all'
@@ -42,17 +46,32 @@ class Moderator extends Component {
       };
       voters.all = data;
       voters.voted = data.filter((voter) => 
-        { return voter.status == 'voted'; }).sort((v1, v2) => 
-        { return v1.vote - v2.vote });
+        voter.status == 'voted')
+          .sort((v1, v2) => 
+        v1.vote - v2.vote);
       voters.pending = data.filter((voter) => 
-        { return voter.status !== 'voted'});
+        voter.status !== 'voted');
+      if (voters.voted.length > 1) {
+        this.setState({
+          voteStats: { 
+            min: voters.voted[0].vote, 
+            max: voters.voted[voters.voted.length-1].vote
+          }
+        });
+      }
       this.setState({ voters: voters });
     });
   }
 
   handleVoteClick() {
-    this.state.view = 'voted';
-    this.state.showVotes = true;
+    Client.post('close', 'POST', {}, (data, err) => {
+      if (err)
+        console.log(err);
+      this.setState({
+        view : 'voted',
+        showVotes : true
+      });
+    });
     return this.state.showVotes;
   }
 
@@ -92,10 +111,9 @@ class Moderator extends Component {
     const view = this.state.view === 'all'?this.state.voters.all:this.state.voters.voted;
     return (
       <div className="container" style={{"width": "100%", "textAlign": "center"}}>
-        <VoterQueue voters={view} showVotes={this.state.showVotes}  />
+        <VoterQueue voters={view} showVotes={this.state.showVotes} voteStats={this.state.voteStats}  />
         { this.footer() }
-      </div>
-      
+      </div>      
     );
   }
 }
@@ -103,7 +121,16 @@ class Moderator extends Component {
 function VoterQueue(props) {
   const voters = [];
   for (let voter of props.voters)
-    voters.push(<td className="VoterCell"><Voter key={ voter.name } voter={ voter } showVote={ props.showVotes } /></td>)
+    voters.push(
+      <td className="VoterCell">
+        <div>
+          <Voter key={ voter.name } 
+                voter={ voter } 
+                showVote={ props.showVotes }
+                minVote={ props.voteStats.min === voter.vote }
+                maxVote={ props.voteStats.max === voter.vote }  />
+        </div>
+      </td>);
   return (
     <div >
       <table style={{ "display": "inline-block" }}>
@@ -115,13 +142,24 @@ function VoterQueue(props) {
 
 function Voter(props) {
   const avatar = '/public/avatars/' + props.voter.avatar;
-  const votedClass = props.voter.status === 'voted'?'success':'default';
+  let pannelStyle = props.voter.status === 'voted'?'primary':'default';
+  const minVote = props.minVote;
+  const maxVote = props.maxVote;
+  const showVote = props.showVote;
+  if (showVote && minVote && minVote !== maxVote) {
+    pannelStyle = 'success';
+  } 
+  if (showVote && maxVote && minVote !== maxVote) {
+    pannelStyle = 'danger';
+  }
   const vote = props.voter.vote === ''?'?':props.voter.vote;
   return (
     <div>
       <div>
-        <Panel bsStyle={ votedClass } header={ props.voter.name }  style={{ "height": 180, "maxWidth": 171} }>
-          <Image src={ avatar } alt='171x180' responsive= {true} />          
+        <Panel bsStyle={ pannelStyle } header={ props.voter.name }  style={{ "maxWidth": 171} }>
+          <div className="ImageCell">
+            <Image src={ avatar } alt='171x180' responsive= {true} />          
+          </div>
         </Panel>
       </div>
       <div>

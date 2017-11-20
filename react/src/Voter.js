@@ -10,7 +10,6 @@ class Voter extends Component {
   }
 
   vote(value) {
-    alert(value);
     Client.post('/vote', 'POST', { vote: value }, (data, err) => {
       if (err == 'Error: HTTP Error Unauthorized')
         window.location = '/reg';

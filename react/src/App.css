@@ -2,36 +2,17 @@
   width: 100%;
 }
 
+.ImageCell {
+  font-size: 500%;
+  position: relative;
+  display: table-cell;
+  height: 1em; 
+  width: 1em; 
+  vertical-align: middle;
+}
+
 .VoterCell {
   padding: 10px;
-}
-
-.Participant {
-  height: 150px;
-  padding: 10px;
-  float: left;
-}
-
-.Participant-voted {
-  height: 170px;
-  width: 170px;
-  padding: 10px;
-  border-style: dashed;
-  border-width: 2px;
-  border-color: green;
-  float: left;
-}
-
-.Participant-avatar {
-  height: 180px;
-  width: 150px;
-  object-fit: cover
-}
-
-.Participant-name {
-  font-size: 24px;
-  font-weight: bold;
-  color: darkblue
 }
 
 .Voter-queue {

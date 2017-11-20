@@ -26,7 +26,7 @@ class App extends Component {
                   </LinkContainer>
                 </Navbar.Brand>
               </Navbar.Header>
-              <Nav>
+              {/* <Nav>
               <LinkContainer to="/reg">
                   <NavItem>Register</NavItem>
                 </LinkContainer>
@@ -36,7 +36,7 @@ class App extends Component {
                 <LinkContainer to="/admin">
                   <NavItem>Moderator</NavItem>
                 </LinkContainer>
-              </Nav>
+              </Nav> */}
             </Navbar>
           </div>
             <Switch>

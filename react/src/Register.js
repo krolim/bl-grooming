@@ -53,7 +53,11 @@ class Register extends Component {
 
   startVoteClick(e) {
     Client.post('/join', 'POST', 
-      { name: this.state.value, avatar: this.state.selectedAvatar.name }, 
+      { 
+        name: this.state.value, 
+        avatar: this.state.selectedAvatar.name,
+        rejoin: false 
+      }, 
         (data, err) => {
           if (err) 
             console.log(err);
