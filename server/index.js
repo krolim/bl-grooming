@@ -14,7 +14,7 @@ app.use(cookieParser());
 app.use('/public', express.static('public'));
 
 app.get('/user-avatars', (req, resp) => {
-  resp.status(200).send(avatarManager.allAvatars());
+  resp.status(200).send(avatarManager.getAvatars());
 });
 
 app.post('/join', (req, resp) => {

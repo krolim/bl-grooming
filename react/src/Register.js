@@ -42,6 +42,8 @@ class Register extends Component {
 
   tumbnailClickHandler(index) {
     // selected = 
+    if (this.state.avatars[index].isSelected)
+      return;
     this.setState({ 
       selectedAvatar: this.state.avatars[index],
       avatarSelected: true,
