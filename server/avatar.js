@@ -29,6 +29,10 @@ module.exports.selectAvatar = (avatarName, user) => {
   return true;
 }
 
+module.exports.freeAvatar = (avatarName) => {
+  avatarsMap.delete(avatarName);
+}
+
 module.exports.getAvatars = () => {
   const result = [];
   avatars.forEach((avatar) => {

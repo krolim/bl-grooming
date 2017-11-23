@@ -65,8 +65,14 @@ app.get('/voters', (req, resp) => {
   resp.status(200).send(voteManager.getVoters());
 });
 
-app.get('/logout', (req, resp) => {
-  resp.clearCookie(COOKIE);
+app.post('/logout', (req, resp) => {
+  const cookie = req.cookies[COOKIE];
+  if (cookie) {
+    const user = JSON.parse(cookie);
+    voteManager.logout(user);
+    resp.clearCookie(COOKIE);
+  }
+  
   resp.status(200).send('Logged out');
 });
 

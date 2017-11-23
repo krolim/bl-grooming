@@ -3,6 +3,7 @@ import './App.css';
 import Client from "./Client";
 import { Image, FormGroup, ControlLabel, FormControl, Button } from 'react-bootstrap';
 import Gallery from 'react-grid-gallery';
+import { lchmod } from 'fs';
 
 class Register extends Component {
 
@@ -21,11 +22,18 @@ class Register extends Component {
     this.retrieveAvatars();
   }
 
+  componentDidMount() {
+    this.interval = setInterval(this.retrieveAvatars.bind(this), 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
   retrieveAvatars() {
     // console.log('retrieve');
     Client.retrieve('/user-avatars', (data) => {
       this.setState({ avatars: data });
-      console.log('state>>>>>>>>', this.state);
     });
   }
 
@@ -68,6 +76,14 @@ class Register extends Component {
     
   }
 
+  leave() {
+    Client.post('/logout', 'POST', {}, (data, err) => {
+      if (err)
+        console.log(err);
+      window.location = '/';
+    });
+  }
+
   render() {
     let avatarSelection; 
     let joinButton = '';
@@ -92,6 +108,11 @@ class Register extends Component {
               >Start Voting >></Button>;
     return (
       <div>
+        <header className="App-header">
+          <span className="App-title">BL Grooming</span>
+            <span className="logoff" onClick={this.leave}>
+            <img src="/power-standby.svg" style={ {height: "1.5em", width: "1.5em", marginTop: "-5px"} }/></span>
+        </header>
         <div style={{ "padding": 10}}>
           <form>
             <FormGroup

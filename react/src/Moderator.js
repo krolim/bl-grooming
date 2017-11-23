@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import './App.css';
 import Client from "./Client";
 import { Panel, Image, Row, Col, Button } from 'react-bootstrap';
+import { Nav, Navbar, NavItem } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
+
 // import { Link } from 'react-router-dom'
 
 class Moderator extends Component {
@@ -107,12 +110,45 @@ class Moderator extends Component {
     // return '';
   }
 
+  nav() {
+    return (
+      <div>
+      <Navbar fluid={true} inverse={true}>
+        <Navbar.Header>
+          <Navbar.Brand>
+            <LinkContainer to="/">
+              <a>BL Grooming</a>
+            </LinkContainer>
+          </Navbar.Brand>
+          <Navbar.Toggle />
+        </Navbar.Header>
+        <Navbar.Collapse>
+          <Nav>
+            <LinkContainer to="/reg">
+              <NavItem>Register</NavItem>
+            </LinkContainer>
+            <LinkContainer to="/voting">
+              <NavItem>Voter</NavItem>
+            </LinkContainer>
+            <LinkContainer to="/admin">
+              <NavItem>Moderator</NavItem>
+            </LinkContainer>
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
+    </div>
+    );
+  }
+
   render() {
     const view = this.state.view === 'all'?this.state.voters.all:this.state.voters.voted;
     return (
-      <div className="container" style={{"width": "100%", "textAlign": "center"}}>
-        <VoterQueue voters={view} showVotes={this.state.showVotes} voteStats={this.state.voteStats}  />
-        { this.footer() }
+      <div>
+        { this.nav() }
+        <div className="container" style={{"width": "100%", "textAlign": "center"}}>
+          <VoterQueue voters={view} showVotes={this.state.showVotes} voteStats={this.state.voteStats}  />
+          { this.footer() }
+        </div>
       </div>      
     );
   }

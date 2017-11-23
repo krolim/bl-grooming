@@ -41,9 +41,15 @@ const newVote = (user) => {
   open = true;
 }
 
+const leave = (user) => {
+  voters.delete(user.name);
+  avatarManager.freeAvatar(user.avatar);
+}
+
 module.exports.join = join;
 module.exports.vote = vote;
 module.exports.getVoters = getVoters;
 module.exports.newVote = newVote;
 module.exports.closeVote = close;
 module.exports.isOpen = isOpen;
+module.exports.logout = leave;

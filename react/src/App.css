@@ -2,6 +2,27 @@
   width: 100%;
 }
 
+.App-header {
+  background-color: #222;
+  height: 50px;
+  padding: 10px;
+  color: white;
+}
+
+.App-title {
+  font-size: 1.5em;
+  display: table-cell;
+  width: 100%;
+}
+
+.logoff {
+  width: 100%;
+  text-align: right;
+  display: table-cell;
+  width: 100%;
+  
+}
+
 .ImageCell {
   font-size: 500%;
   position: relative;
