@@ -3,7 +3,9 @@ import './App.css';
 import Client from "./Client";
 import { Image, FormGroup, ControlLabel, FormControl, Button } from 'react-bootstrap';
 import Gallery from 'react-grid-gallery';
-import { lchmod } from 'fs';
+import { HeaderPanel } from './Headers.js';
+import { notify } from 'react-notify-toast';
+import Cookies from 'universal-cookie';
 
 class Register extends Component {
 
@@ -24,6 +26,17 @@ class Register extends Component {
 
   componentDidMount() {
     this.interval = setInterval(this.retrieveAvatars.bind(this), 1000);
+    const cookies = new Cookies();
+    const cookie = cookies.get('groomingAppCookie');
+    if (cookie)
+      this.setState({
+        value: cookie.name,
+        avatarSelected: true,
+        displayGrid: false,
+        selectedAvatar: {
+          src: '/public/avatars/' + cookie.avatar
+        }
+      });
   }
 
   componentWillUnmount() {
@@ -49,6 +62,7 @@ class Register extends Component {
   };
 
   tumbnailClickHandler(index) {
+    notify.show('This avatar was already taken', 'warning');
     // selected = 
     if (this.state.avatars[index].isSelected)
       return;
@@ -57,8 +71,6 @@ class Register extends Component {
       avatarSelected: true,
       showGrid: false
     });
-    console.log('index',index);
-    console.log(this.state.selectedAvatar);
   }
 
   startVoteClick(e) {
@@ -72,16 +84,7 @@ class Register extends Component {
           if (err) 
             console.log(err);
           window.location = '/voting';
-      });
-    
-  }
-
-  leave() {
-    Client.post('/logout', 'POST', {}, (data, err) => {
-      if (err)
-        console.log(err);
-      window.location = '/';
-    });
+      }); 
   }
 
   render() {
@@ -98,7 +101,7 @@ class Register extends Component {
             onClickThumbnail={ this.tumbnailClickHandler.bind(this) }/>;
     else
       avatarSelection = 
-        <Avatar src="/public/avatars/Unknown-person.png" 
+        <Avatar src="/public/Unknown-person.png" 
             onClick={() => { this.setState({ displayGrid: true }); }} />;
     if (!this.state.displayGrid || this.state.avatarSelected)
       joinButton = 
@@ -108,11 +111,7 @@ class Register extends Component {
               >Start Voting >></Button>;
     return (
       <div>
-        <header className="App-header">
-          <span className="App-title">BL Grooming</span>
-            <span className="logoff" onClick={this.leave}>
-            <img src="/power-standby.svg" style={ {height: "1.5em", width: "1.5em", marginTop: "-5px"} }/></span>
-        </header>
+        <HeaderPanel msg="Test" severity="warning" />
         <div style={{ "padding": 10}}>
           <form>
             <FormGroup

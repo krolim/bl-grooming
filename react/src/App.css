@@ -43,6 +43,25 @@
 .btn-block {
   padding: 10% 0; 
 }
+
+.votePannel {
+  padding: 5px;
+  font-size: 12px;
+  text-align: left;
+}
+
+.voter-button-small {
+  width: 50%;
+  padding: 0px;
+  display: inline-block
+}
+
+.voter-button-panel {
+  width: "100%";
+  height: "100%";
+  text-align: "center";
+  display: block
+}
 /* 
 div[class="row"] {
   border: 1px dotted rgba(0, 0, 0, 0.7);

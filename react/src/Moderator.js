@@ -78,9 +78,8 @@ class Moderator extends Component {
     return this.state.showVotes;
   }
 
-  handleNewVoteClick() {
-    Client.post('new-vote', 'PUT', {}, (data, err) => {
-      console.log('view --->', this.state.view);
+  handleNewVoteClick(reset) {
+    Client.post('new-vote', 'PUT', { reset: reset }, (data, err) => {
       if (err)
         console.log(err);
       this.setState({
@@ -88,7 +87,6 @@ class Moderator extends Component {
         showVotes: false
       });
     });
-    console.log('view new --->', this.state.view);
   }
 
   footer() {
@@ -96,8 +94,8 @@ class Moderator extends Component {
       return(<h2>Waiting for voters to join...</h2>);
     } else {
       const button = {
-        onClick: this.state.showVotes?
-          this.handleNewVoteClick:this.handleVoteClick,
+        onClick: () => this.state.showVotes?
+          this.handleNewVoteClick(false):this.handleVoteClick(),
         title: this.state.showVotes?
           'Start New Vote':'Show results'
       };
@@ -124,15 +122,7 @@ class Moderator extends Component {
         </Navbar.Header>
         <Navbar.Collapse>
           <Nav>
-            <LinkContainer to="/reg">
-              <NavItem>Register</NavItem>
-            </LinkContainer>
-            <LinkContainer to="/voting">
-              <NavItem>Voter</NavItem>
-            </LinkContainer>
-            <LinkContainer to="/admin">
-              <NavItem>Moderator</NavItem>
-            </LinkContainer>
+            <NavItem onClick={ () => this.handleNewVoteClick(true) }>Reset</NavItem>
           </Nav>
         </Navbar.Collapse>
       </Navbar>
@@ -192,9 +182,9 @@ function Voter(props) {
   return (
     <div>
       <div>
-        <Panel bsStyle={ pannelStyle } header={ props.voter.name }  style={{ "maxWidth": 171} }>
+        <Panel bsStyle={ pannelStyle } header={ props.voter.name }  style={{ maxWidth: 171} }>
           <div className="ImageCell">
-            <Image src={ avatar } alt='171x180' responsive= {true} />          
+            <Image src={ avatar } alt='171x171' style={{ width: 80, height: 80 }} />          
           </div>
         </Panel>
       </div>

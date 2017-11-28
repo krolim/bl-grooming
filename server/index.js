@@ -23,15 +23,15 @@ app.post('/join', (req, resp) => {
   console.log('join', user, avatar);
   const cookie = req.cookies[COOKIE];
   if (cookie)
-    user = JSON.parse(cookie);
-  console.log('cookie', cookie);
+    voteManager.logout(JSON.parse(cookie));
+  // console.log('cookie', cookie);
   const result = voteManager.join(user);
   if (result[1] == 400)
     return resp.status(400).send(result[1]);
   else if (result[1] == 401)
     return resp.status(401).send(result[1]);
-  if (!cookie) 
-    resp.cookie(COOKIE, JSON.stringify(user));
+  // if (avatar) 
+  resp.cookie(COOKIE, JSON.stringify(user));
   return resp.status(200).send(user);
 });
 
@@ -57,7 +57,7 @@ app.post('/vote', (req, resp) => {
 });
 
 app.put('/new-vote', (req, resp) => {
-  voteManager.newVote();
+  voteManager.newVote(req.body.reset);
   resp.status(200).send();
 });
 

@@ -7,17 +7,24 @@ import Moderator from './Moderator';
 import Register from './Register';
 import Voter from "./Voter";
 import { MediaQuery } from 'react-responsive';
+import Cookies from 'universal-cookie';
 
 class App extends Component {
 
   componentWillMount(){
+    const cookies = new Cookies();
+    console.log(cookies.get('groomingAppCookie'));
     this.setState({width: window.innerWidth});
   }
   
 
   render() {
-      const redirect = this.state.width > 1000 ? '/admin':'/reg';
-      return (
+    const cookies = new Cookies();
+    const cookie = cookies.get('groomingAppCookie');
+    const redirect = this.state.width > 1000 ? <Redirect to="/admin" />:
+      window.location.pathname === '/' ? 
+      cookie ? <Redirect to="/voting" /> : <Redirect to="/reg" /> : '';
+    return (
       <div style={{ "width": "100%" }}>
         <BrowserRouter>
           <div>
@@ -26,10 +33,10 @@ class App extends Component {
                 <Route path="/voting" component={Voter}/>
                 <Route path="/admin" component={Moderator}/> 
               </Switch>
-              <Redirect to={redirect} />
+              {redirect} 
           </div>
         </BrowserRouter>
-    </div>
+      </div>
     );
   }
 }

@@ -36,8 +36,11 @@ const getVoters = () => {
   return results;
 }
 
-const newVote = (user) => {
-  voters.clear();
+const newVote = (reset) => {
+  if (reset)
+    voters.clear();
+  else
+    voters.forEach(value => value.vote = 0);
   open = true;
 }
 

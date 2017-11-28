@@ -2,18 +2,27 @@ import React, { Component } from 'react';
 import './App.css';
 import Client from "./Client";
 import { Grid, Row, Col, Button } from 'react-bootstrap';
+import { HeaderPanel } from './Headers.js';
+import { notify } from 'react-notify-toast';
 
 class Voter extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      vote: 0
+    }
+    this.vote = this.vote.bind(this);
   }
 
   vote(value) {
     Client.post('/vote', 'POST', { vote: value }, (data, err) => {
+      console.log('----->', err);
       if (err == 'Error: HTTP Error Unauthorized')
         window.location = '/reg';
-      console.log('Your vote is: ', value);
+      this.setState({
+        vote: value
+      });
     });
   } 
 
@@ -21,27 +30,39 @@ class Voter extends Component {
     const rows = [];
     for(let i=1; i<4; i++) {
       rows.push(
-        <tr><td colspan="2">
+        <div style={{ width: "100%" }}> 
           <Button bsSize="large" onClick={ () => this.vote(i) } block><h1>{ i }</h1></Button>
-        </td></tr>
+        </div>
       );
     } 
     rows.push(
-      <tr>
-        <td xs={6}><Button onClick={ () => this.vote(4) } bsSize="large" block><h3>4</h3></Button></td>   
-        <td xs={6}><Button onClick={ () => this.vote(5) } bsSize="large" block><h3>5</h3></Button></td>   
-      </tr>
+      <div style={{ width: "100%" }}>
+        <span className="voter-button-small"> 
+          <Button onClick={ () => this.vote(4) } bsSize="large" block><h3>4</h3></Button>
+        </span>
+        <span className="voter-button-small"> 
+          <Button onClick={ () => this.vote(5) } bsSize="large" block><h3>5</h3></Button>
+        </span>
+      </div>
     );
     return rows;
   }
   
   render() {
+    const message = this.state.vote === 0 ? 'Please vote': 'Yor vote is ' + this.state.vote;
     return(
-      <div className="container" style={{"width": "100%", "height": "100%", "textAlign": "center"}}>
-        <table style={{ "width": "100%" }}>
-          { this.buttons() }  
-          
-        </table>
+      <div>
+        <div>
+          <HeaderPanel />
+        </div>
+        <div class='votePannel'>
+          { message }
+        </div>
+        <div className="voter-button-panel">
+          <div>
+            { this.buttons() }          
+          </div>
+        </div>
       </div>
     );
   }
