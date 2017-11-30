@@ -50,6 +50,13 @@
   text-align: left;
 }
 
+.voteStats {
+  padding: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+}
+
 .voter-button-small {
   width: 50%;
   padding: 0px;
