@@ -40,3 +40,7 @@ module.exports.getAvatars = () => {
   });
   return result;
 }
+
+module.exports.reset = () => {
+  avatarsMap.clear();
+}

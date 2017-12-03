@@ -45,7 +45,9 @@ class Register extends Component {
 
   retrieveAvatars() {
     // console.log('retrieve');
-    Client.retrieve('/user-avatars', (data) => {
+    Client.retrieve('/user-avatars', (data, err) => {
+      if (err)
+        return notify.show('Unable to read avatars', 'warning');
       this.setState({ avatars: data });
     });
   }
@@ -62,7 +64,7 @@ class Register extends Component {
   };
 
   tumbnailClickHandler(index) {
-    notify.show('This avatar was already taken', 'warning');
+    // notify.show('This avatar was already taken', 'warning');
     // selected = 
     if (this.state.avatars[index].isSelected)
       return;
@@ -82,7 +84,7 @@ class Register extends Component {
       }, 
         (data, err) => {
           if (err) 
-            console.log(err);
+            return notify.show('This avatar was already taken', 'warning');;
           window.location = '/voting';
       }); 
   }

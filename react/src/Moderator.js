@@ -4,8 +4,10 @@ import Client from "./Client";
 import { Panel, Image, Row, Col, Button } from 'react-bootstrap';
 import { Nav, Navbar, NavItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
+import { VoterPanel } from './VoterPanel.js'
 
 // import { Link } from 'react-router-dom'
+const voteLvls = ['', 'ok', 'ok', 'warn', 'danger', 'danger'];
 
 class Moderator extends Component {
 
@@ -123,9 +125,12 @@ class Moderator extends Component {
     const weights = [];
     stats.weights.forEach((weight, index) => {
       if (weight > 0) {
-        const percent = weight/stats.allVoters*100;
+        const percent = (weight/stats.allVoters*100).toFixed(1);
+        const size = Math.floor(percent / 3) + 18;
         weights.push(
-          <span>{ index + ' (' + percent + '%' + ')'}</span>);
+          <span className="voteStatsPrc" style={{ fontSize: size + "px" }}>
+            { index + ' ' }<span style={{fontSize: "14px"}}> { ' (' + percent + '%' + ')'} </span>
+          </span>);
       }
     });
     return (
@@ -176,14 +181,21 @@ class Moderator extends Component {
     );
   }
 
+  unambiguousVote(vote) {
+    const className = 'voteDecision ' + voteLvls[vote];
+    console.log(className);
+    return className;
+  } 
+
   render() {
     const view = this.state.view === 'all'?this.state.voters.all:this.state.voters.voted;
-    const body = this.state.voteStats.decision ? 
-      <div className="voteDecision"></div> : 
+    const body = this.state.voteStats.decision && this.state.showVotes ? 
+      <div className={ this.unambiguousVote(this.state.voteStats.min ) }>{this.state.voteStats.min}</div> : 
       <div>
         <VoterQueue voters={view} showVotes={this.state.showVotes} voteStats={this.state.voteStats}  />;
           { this.state.showVotes?this.voteStats(this.state.voteStats):'' }
       </div>
+    console.log(body);
     return (
       <div>
         { this.nav() }
@@ -200,20 +212,17 @@ function VoterQueue(props) {
   const voters = [];
   for (let voter of props.voters)
     voters.push(
-      <td className="VoterCell">
-        <div>
-          <Voter key={ voter.name } 
+        <span className="voter-cell">
+          <VoterPanel key={ voter.name } 
                 voter={ voter } 
                 showVote={ props.showVotes }
                 minVote={ props.voteStats.min === voter.vote }
                 maxVote={ props.voteStats.max === voter.vote }  />
-        </div>
-      </td>);
+        </span>
+    );
   return (
-    <div >
-      <table style={{ "display": "inline-block" }}>
-        <tr>{ voters }</tr>
-      </table>
+    <div style={{ width: "100%" }}>
+        { voters }
     </div>
   );
 }
@@ -236,7 +245,7 @@ function Voter(props) {
       <div>
         <Panel bsStyle={ pannelStyle } header={ props.voter.name }  style={{ maxWidth: 171} }>
           <div className="ImageCell">
-            <Image src={ avatar } alt='171x171' style={{ width: 80, height: 80 }} />          
+            <Image src={ avatar } alt='171x171' style={{ width: 60, height: 60 }} />          
           </div>
         </Panel>
       </div>

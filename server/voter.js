@@ -37,8 +37,10 @@ const getVoters = () => {
 }
 
 const newVote = (reset) => {
-  if (reset)
+  if (reset) {
     voters.clear();
+    avatarManager.reset();
+  }
   else
     voters.forEach(value => value.vote = 0);
   open = true;
