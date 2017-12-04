@@ -142,7 +142,15 @@ class Moderator extends Component {
 
   footer() {
     if (this.state.voters.all.length < 2) {
-      return(<h2>Waiting for voters to join...</h2>);
+      const barber = this.state.voters.all.length == 0 ?  
+        <div><img style={{ maxWidth: "250px"}} src="/public/barber.jpg" alt="barber"/></div>:
+        '';
+      return(
+          <div>
+            { barber }
+            <h2>Waiting for voters to join...</h2>
+          </div>
+      );
     } else {
       const button = {
         onClick: () => this.state.showVotes?
@@ -192,7 +200,7 @@ class Moderator extends Component {
     const body = this.state.voteStats.decision && this.state.showVotes ? 
       <div className={ this.unambiguousVote(this.state.voteStats.min ) }>{this.state.voteStats.min}</div> : 
       <div>
-        <VoterQueue voters={view} showVotes={this.state.showVotes} voteStats={this.state.voteStats}  />;
+        <VoterQueue voters={view} showVotes={this.state.showVotes} voteStats={this.state.voteStats}  />
           { this.state.showVotes?this.voteStats(this.state.voteStats):'' }
       </div>
     console.log(body);
@@ -221,7 +229,7 @@ function VoterQueue(props) {
         </span>
     );
   return (
-    <div style={{ width: "100%" }}>
+    <div style={{ width: "100%", paddingBottom: "40px"  }}>
         { voters }
     </div>
   );

@@ -7,6 +7,14 @@ import { HeaderPanel } from './Headers.js';
 import { notify } from 'react-notify-toast';
 import Cookies from 'universal-cookie';
 
+const avatarsMap = new Map();
+avatarsMap.set(
+  'erata.png', ['Erata', 'ErataBog', 'Erata Bog', 'Ерата', 'Ерата Бог', 'ЕратаБог']
+);
+avatarsMap.set(
+  'Batman.png', ['Adi', 'Adriana', 'Ади', 'Адриана', 'Addi', 'Батман', 'Batman']
+);
+
 class Register extends Component {
 
   constructor(props) {
@@ -54,8 +62,8 @@ class Register extends Component {
 
   getValidationState() {
     const length = this.state.value.length;
-    if (length > 1 && length < 12) return 'success';
-    else if (length > 11) return 'warning';
+    if (length > 1 && length <= 9) return 'success';
+    else if (length > 9) return 'warning';
     return null;
   };
 
@@ -66,13 +74,21 @@ class Register extends Component {
   tumbnailClickHandler(index) {
     // notify.show('This avatar was already taken', 'warning');
     // selected = 
-    if (this.state.avatars[index].isSelected)
+    const selectedAvatar = this.state.avatars[index];
+    if (selectedAvatar.isSelected)
       return;
+    if (!this.validateAvatarSel(selectedAvatar.name, this.state.value)) 
+      return notify.show('Only those worthy by Name may select this avatar!', 'warning');
     this.setState({ 
-      selectedAvatar: this.state.avatars[index],
+      selectedAvatar: selectedAvatar,
       avatarSelected: true,
       showGrid: false
     });
+  }
+
+  validateAvatarSel(avatar, name) {
+    const names = avatarsMap.get(avatar);
+    return names ? names.includes(name) : true; 
   }
 
   startVoteClick(e) {
@@ -99,7 +115,7 @@ class Register extends Component {
     else if (this.state.displayGrid)
       avatarSelection = 
         <Gallery rowHeight={80} images={ this.state.avatars } 
-            enableLightbox={false} 
+            enableLightbox={false} enableImageSelection={false}
             onClickThumbnail={ this.tumbnailClickHandler.bind(this) }/>;
     else
       avatarSelection = 

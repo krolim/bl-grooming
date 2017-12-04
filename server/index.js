@@ -8,6 +8,13 @@ const cookieParser = require("cookie-parser");
 const avatarManager = require('./avatar.js');
 const voteManager = require('./voter.js');
 const COOKIE = 'groomingAppCookie';
+const path = require('path');
+
+app.use(express.static(path.join(__dirname, 'build')));
+
+app.get('/', function (req, res) {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
 app.use(bodyParser.json());
 app.use(cookieParser());
