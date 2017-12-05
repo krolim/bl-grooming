@@ -54,7 +54,7 @@ class Voter extends Component {
   }
   
   render() {
-    const message = this.state.vote === 0 ? 'Please vote': 'Yor vote is ' + this.state.vote;
+    const message = this.state.vote === 0 ? 'Please vote': 'Your vote is ' + this.state.vote;
     return(
       <div>
         <div>

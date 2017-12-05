@@ -70,10 +70,8 @@ class Moderator extends Component {
   }
 
   getStats(voters) {
-    const allVoters = voters.all.length;
-    const weights = [];
-    for (let i=0; i<allVoters; ++i)
-      weights.push(0);
+    const allVoters = voters.voted.length;
+    const weights = [0,0,0,0,0,0];
     const stats = {
       allVoters: allVoters,
       decision: false,
@@ -88,7 +86,7 @@ class Moderator extends Component {
       stats.weights[stats.min] = allVoters;
     } else {
       let sum = 0;
-      voters.all.forEach(voter => {
+      voters.voted.forEach(voter => {
         const vote = Number.parseInt(voter.vote);
         sum +=  vote;
         stats.weights[vote] += 1;
@@ -102,9 +100,15 @@ class Moderator extends Component {
     Client.post('close', 'POST', {}, (data, err) => {
       if (err)
         console.log(err);
+      const voters = this.state.voters;
+      const voteStats = this.state.voteStats;
       this.setState({
         view : 'voted',
-        showVotes : true
+        showVotes : true,
+        lastVote: {
+          voters: voters,
+          voteStats: voteStats
+        }
       });
     });
     return this.state.showVotes;
@@ -141,7 +145,7 @@ class Moderator extends Component {
   }
 
   footer() {
-    if (this.state.voters.all.length < 2) {
+    if (!this.state.showVotes && this.state.voters.all.length < 2) {
       const barber = this.state.voters.all.length == 0 ?  
         <div><img style={{ maxWidth: "250px"}} src="/public/barber.jpg" alt="barber"/></div>:
         '';
@@ -159,7 +163,7 @@ class Moderator extends Component {
           'Start New Vote':'Show results'
       };
       return (<div>
-        <Button disabled={ this.state.voters.voted.length < 2 } 
+        <Button disabled={ this.state.voters.voted.length < 2 && !this.state.showVotes } 
             onClick={ button.onClick } bsStyle="primary" bsSize="large">{ button.title }</Button>
       </div>);
     }
@@ -191,19 +195,22 @@ class Moderator extends Component {
 
   unambiguousVote(vote) {
     const className = 'voteDecision ' + voteLvls[vote];
-    console.log(className);
+    // console.log(className);
     return className;
   } 
 
   render() {
-    const view = this.state.view === 'all'?this.state.voters.all:this.state.voters.voted;
-    const body = this.state.voteStats.decision && this.state.showVotes ? 
-      <div className={ this.unambiguousVote(this.state.voteStats.min ) }>{this.state.voteStats.min}</div> : 
+    const lastVote = this.state.lastVote;
+    const showVotes = this.state.showVotes;
+    const view = showVotes ? lastVote.voters.voted : this.state.voters.all;
+    const voteStats = showVotes ? lastVote.voteStats : this.state.voteStats;
+    const body = this.state.voteStats.decision && showVotes ? 
+      <div className={ this.unambiguousVote(voteStats.min ) }>{voteStats.min}</div> : 
       <div>
-        <VoterQueue voters={view} showVotes={this.state.showVotes} voteStats={this.state.voteStats}  />
-          { this.state.showVotes?this.voteStats(this.state.voteStats):'' }
+        <VoterQueue voters={view} showVotes={showVotes} voteStats={voteStats}  />
+          { this.state.showVotes?this.voteStats(lastVote.voteStats):'' }
       </div>
-    console.log(body);
+    // console.log(body);
     return (
       <div>
         { this.nav() }

@@ -1,0 +1,7 @@
+{
+  "name": "bl-grooming-app",
+  "version": "0.1.0",
+  "scripts": {
+    "build": "cd bin && ./build.sh"
+  }
+}
