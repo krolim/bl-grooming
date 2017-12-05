@@ -11,13 +11,17 @@ const COOKIE = 'groomingAppCookie';
 const path = require('path');
 
 app.use(express.static(path.join(__dirname, 'build')));
-
-app.get('/', function (req, res) {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
-
 app.use(bodyParser.json());
 app.use(cookieParser());
+
+const bootstrap = (req, res) =>
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+
+app.get('/', bootstrap);
+app.get('/voting', bootstrap);
+app.get('/reg', bootstrap);
+app.get('/admin', bootstrap);
+
 app.use('/public', express.static('public'));
 
 app.get('/user-avatars', (req, resp) => {
