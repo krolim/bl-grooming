@@ -42,7 +42,7 @@ const newVote = (reset) => {
     avatarManager.reset();
   }
   else
-    voters.forEach(value => value.vote = 0);
+    voters.forEach(voter => voter.vote = 0);
   open = true;
 }
 

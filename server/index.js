@@ -42,34 +42,34 @@ app.post('/join', (req, resp) => {
   else if (result[1] == 401)
     return resp.status(401).send(result[1]);
   // if (avatar) 
-  resp.cookie(COOKIE, JSON.stringify(user));
+  resp.cookie(COOKIE, JSON.stringify(user), 
+    { expires: new Date(2147483647000) }); // make it last
   return resp.status(200).send(user);
 });
 
 app.post('/close', (req, resp) => {
   voteManager.closeVote();
-  resp.status(200).send();
+  resp.status(200).send({});
 });
 
 app.post('/vote', (req, resp) => {
   if (!voteManager.isOpen())
-    return resp.status(403).send('Voting closed');
+    return resp.status(403).send({ error: 'Voting is closed' });
   if (!req.body.vote) 
     return resp.status(400).send();
-  console.log('voted: ', req.body.vote);
   const cookie = req.cookies[COOKIE];
   if (!cookie) { 
     console.log('No cookie');
-    return resp.status(401).send('Not registered');
+    return resp.status(401).send({ error: 'Not registered' });
   }
   const user = JSON.parse(cookie);
   voteManager.vote(user, req.body.vote);
-  resp.status(200).send(); 
+  resp.status(200).send({}); 
 });
 
 app.put('/new-vote', (req, resp) => {
   voteManager.newVote(req.body.reset);
-  resp.status(200).send();
+  resp.status(200).send({});
 });
 
 app.get('/voters', (req, resp) => {
@@ -83,8 +83,7 @@ app.post('/logout', (req, resp) => {
     voteManager.logout(user);
     resp.clearCookie(COOKIE);
   }
-  
-  resp.status(200).send('Logged out');
+  resp.status(200).send({});
 });
 
 console.log("Listening on ", port);

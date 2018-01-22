@@ -46,7 +46,9 @@ class Moderator extends Component {
   }
   
   retrieveVoters() {
-    Client.retrieve('/voters', (data) => {
+    Client.retrieve('/voters', (data, err) => {
+      if (err) 
+        return console.log(err);
       // console.log(data); /public/voters.json
       const voters = {
         all: [],
@@ -99,7 +101,7 @@ class Moderator extends Component {
   handleVoteClick() {
     Client.post('close', 'POST', {}, (data, err) => {
       if (err)
-        console.log(err);
+        return console.log(err);
       const voters = this.state.voters;
       const voteStats = this.state.voteStats;
       this.setState({
@@ -117,7 +119,7 @@ class Moderator extends Component {
   handleNewVoteClick(reset) {
     Client.post('new-vote', 'PUT', { reset: reset }, (data, err) => {
       if (err)
-        console.log(err);
+        return console.log(err);
       this.setState({
         view: 'all', 
         showVotes: false

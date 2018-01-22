@@ -11,6 +11,7 @@ const retrieve = (url, cb) => {
     .then(cb)
     .catch((e) => { 
       console.log(e);
+      cb(undefined, e);
     });
 };
 
@@ -24,22 +25,23 @@ const post = (url, method, body, cb) => {
     },
     body: JSON.stringify(body)})
     .then(checkStatus)
+    .then(parseText)
     .then(cb)
     .catch((e) => { 
-      console.log('>>>>>>>',e);
-      cb(null, e);
+      console.log('fetch error >>>>>>>',e);
+      cb(undefined, e);
     });
 };
 
 function checkStatus(response) {
-  // console.log(response);
   if (response.status >= 200 && response.status < 300)
     return response;
-  // if (response.status === 401)
-  //   return window.location = '/reg'; 
-  const error = new Error(`HTTP Error ${response.statusText}`);
-  error.status = response.statusText;
-  error.response = response;
+  const error = 
+    { 
+      text: `HTTP Error ${response.statusText}`,
+      statusCode: response.status,
+      body: parseText(response)
+    }
   console.log(error); // eslint-disable-line no-console
   throw error;
 }
@@ -48,5 +50,10 @@ function parseJSON(response) {
   return response.json();
 }
 
+function parseText(response) {
+  return response.text();
+}
+
 const Client = { retrieve, post };
+
 export default Client;

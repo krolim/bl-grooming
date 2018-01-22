@@ -10,21 +10,33 @@ class Voter extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      vote: 0
+      message: 'Please vote'
     }
     this.vote = this.vote.bind(this);
   }
 
   vote(value) {
     Client.post('/vote', 'POST', { vote: value }, (data, err) => {
-      console.log('----->', err);
-      if (err == 'Error: HTTP Error Unauthorized')
-        window.location = '/reg';
       this.setState({
-        vote: value
+        message: this.getUserLog(value, err)
       });
     });
   } 
+
+  getUserLog(value, err) {
+    let message = `Your vote is: ${value}`;
+    if (err) {
+      message = err;
+      if (err.statusCode) {
+        if (err.statusCode == 401)
+          window.location = '/reg';
+        if (err.statusCode === 403) 
+          message = 'Failed: Voting is closed!'
+      };
+    }
+    return message;
+
+  }
 
   buttons() {
     const rows = [];
@@ -40,13 +52,9 @@ class Voter extends Component {
       <div style={{ width: "100%" }}>
         <span>
           <button type="button" className="button xs" onClick={ () => this.vote(4) } >{ 4 }</button> 
-           
-          {/* <Button onClick={ () => this.vote(4) } bsSize="large" block><h3>4</h3></Button> */}
         </span>
         <span>
           <button type="button" className="button xs" onClick={ () => this.vote(5) } >{ 5 }</button> 
-           
-          {/* <Button onClick={ () => this.vote(5) } bsSize="large" block><h3>5</h3></Button> */}
         </span>
       </div>
     );
@@ -54,14 +62,13 @@ class Voter extends Component {
   }
   
   render() {
-    const message = this.state.vote === 0 ? 'Please vote': 'Your vote is ' + this.state.vote;
     return(
       <div>
         <div>
           <HeaderPanel />
         </div>
         <div class='votePannel'>
-          { message }
+          {  this.state.message }
         </div>
         <div className="voter-button-panel">
           <div style={{ height: "400px"}}>
