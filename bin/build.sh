@@ -1,6 +1,7 @@
 #/bin/bash
 
-rm -r ../server/build/*
+rm -r ../server/build
+mkdir ../server/build
 rm -r ../react/build/*
 cd ../react/
 npm install --only=prod
