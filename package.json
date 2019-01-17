@@ -2,6 +2,7 @@
   "name": "bl-grooming-app",
   "version": "0.1.0",
   "scripts": {
+    "start": "cd bin && ./start.sh",
     "build": "cd bin && ./build.sh"
   }
 }
