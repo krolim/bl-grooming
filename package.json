@@ -4,5 +4,8 @@
   "scripts": {
     "start": "cd bin && ./start.sh",
     "build": "cd bin && ./build.sh"
+  },
+  "dependencies": {
+    "rmc-picker": "^5.0.6"
   }
 }

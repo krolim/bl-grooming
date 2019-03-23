@@ -90,14 +90,15 @@
 
 .button {
   position: relative;
-  background-color: orange;
+  background-color: lightsteelblue;
   border: solid 0.5px;
-  border-color: darkblue;
-  font-size: 28px;
-  font-weight: bold;
+  border-color: steelblue;
+  font-size: 24px;
+  /* font-weight: bold; */
   color: black;
-  padding: 10%;
+  /* padding: 10%; */
   width: 100%;
+  height: 50px;
   text-align: center;
   -webkit-transition-duration: 0.4s; /* Safari */
   transition-duration: 0.4s;
@@ -203,6 +204,75 @@
   max-height:100%;
 }
 
+/* .voter-picker {
+  height: 500px;
+} */
+
+.rmc-picker,.rmc-multi-picker {
+  height: 200px; /*34*7*/
+}
+
+.rmc-multi-picker {
+  display: flex;
+  align-items: center;
+}
+
+.rmc-picker-item {
+  font-size: 32px;
+  height: 66px;
+  line-height: 62px;
+  /* padding: 0 10 px; */
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #9b9b9b;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.rmc-picker {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  flex: 1;
+  text-align: center;
+}
+
+.rmc-picker-mask {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  margin: 0 auto;
+  width: 100%;
+  z-index: 3;
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.4)), linear-gradient(to top, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.4));
+  background-position: top, bottom;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+.rmc-picker-content {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+}
+
+.rmc-picker-indicator {
+  box-sizing: content-box;
+  width: 100%;
+  height: 60px;
+  position: absolute;
+  left: 0;
+  /* top: 72px; */
+  z-index: 3;
+  border-top: 3PX solid #ddd;
+  border-bottom: 3PX solid #ddd;
+}
 /* 
 div[class="row"] {
   border: 1px dotted rgba(0, 0, 0, 0.7);

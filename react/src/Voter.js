@@ -1,21 +1,29 @@
 import React, { Component } from 'react';
 import './App.css';
+import Picker from 'rmc-picker';
+import MultiPicker from 'rmc-picker';
 import Client from "./Client";
-import { Grid, Row, Col, Button } from 'react-bootstrap';
+import {Grid, Row, Col, Button }  from 'react-bootstrap';
 import { HeaderPanel } from './Headers.js';
-import { notify } from 'react-notify-toast';
+import { notify }  from 'react-notify-toast';
+// import click from './snd/click.mp3';
 
 class Voter extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      message: 'Please vote'
+      message: 'Please vote',
+      voteValue: '3'
     }
     this.vote = this.vote.bind(this);
+    this.onValueChange = this.onValueChange.bind(this);
   }
 
-  vote(value) {
+  vote() {
+    // let value = val ? val:this.state.voteValue;
+    // alert(this.state.voteValue);
+    let value = this.state.voteValue;
     Client.post('/vote', 'POST', { vote: value }, (data, err) => {
       this.setState({
         message: this.getUserLog(value, err)
@@ -37,28 +45,36 @@ class Voter extends Component {
     return message;
 
   }
+  
+  onValueChange(value) {
+    this.setState({
+      voteValue: value
+    })
+    // let audio = new Audio(click);
+    // audio.play();
+    // alert(window.navigator.vibrate);
+    // window.navigator.vibrate(200);
+    // alert(value);
+  }
 
-  buttons() {
-    const rows = [];
-    for(let i=1; i<4; i++) {
-      rows.push(
-        <div style={{ width: "100%"}}>
-          <button type="button" className="button" onClick={ () => this.vote(i) } >{ i }</button> 
-          {/* <Button bsSize="large" onClick={ () => this.vote(i) } block><h2>{ i }</h2></Button> */}
-        </div>
-      );
-    } 
-    rows.push(
-      <div style={{ width: "100%" }}>
-        <span>
-          <button type="button" className="button xs" onClick={ () => this.vote(4) } >{ 4 }</button> 
-        </span>
-        <span>
-          <button type="button" className="button xs" onClick={ () => this.vote(5) } >{ 5 }</button> 
-        </span>
-      </div>
-    );
-    return rows;
+  picker() {
+    const start = 1;
+    const len = 5;
+    const items = [];
+    for (let i = start; i < start + len; i++) {
+      items.push(<Picker.Item value={i + ''} key={i}>
+        {i}
+      </Picker.Item>);
+    }
+    return  <div style={{ background: '#f5f5f9', padding: 10, textAlign: "center" }}>
+      <Picker 
+        defaultSelectedValue={this.state.voteValue}
+        // selectedValue={this.state.voteValue}
+        onValueChange={this.onValueChange}
+      >
+        { items }
+      </Picker>
+    </div>
   }
   
   render() {
@@ -67,13 +83,14 @@ class Voter extends Component {
         <div>
           <HeaderPanel />
         </div>
-        <div class='votePannel'>
+        <div className='votePannel'>
           {  this.state.message }
         </div>
-        <div className="voter-button-panel">
-          <div style={{ height: "400px"}}>
-            { this.buttons() }          
-          </div>
+        <div >
+          { this.picker() }          
+        </div>
+        <div style={{ paddingTop: '10px' }}>
+          <button onClick={this.vote} className="button">Vote</button>
         </div>
       </div>
     );
